@@ -11,7 +11,6 @@
 <meta charset="ISO-8859-1">
 <title>Time Dashboard</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
-<script type="text/javascript" src="/js/app.js"></script>
 </head>
 <body>
 	<div>

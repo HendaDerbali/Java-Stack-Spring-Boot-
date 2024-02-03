@@ -1,0 +1,16 @@
+@charset "ISO-8859-1";
+
+body{
+	margin : 0 auto;
+	width: 800px
+}
+
+div {
+	margin-top : 100px;
+	display :flex; 
+	justify-content: space-between;
+}
+
+h1{
+	color: blue;
+}

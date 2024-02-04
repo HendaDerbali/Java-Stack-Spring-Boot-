@@ -1,4 +1,4 @@
-package com.controllers;
+package com.fruityLoops.controllers;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.models.Item;
+import com.fruityLoops.models.Item;
+
+
 
 @Controller
 public class FruitLoopController {

@@ -1,4 +1,4 @@
-package com.models;
+package com.fruityLoops.models;
 
 
 public class Item {

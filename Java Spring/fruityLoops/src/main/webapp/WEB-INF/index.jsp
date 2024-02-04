@@ -30,7 +30,7 @@ test
 			<c:forEach var="oneFruit" items="${fruits}">
 				<tr>
 					<td><c:out value="${oneFruit.name}"></c:out></td>
-					<td><c:out value="${fruit.name}"></c:out></td>
+					<td><c:out value="${oneFruit.price}"></c:out></td>
 				</tr>
 
 			</c:forEach>

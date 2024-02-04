@@ -3,7 +3,6 @@ package com.omikujiForm.Controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
@@ -11,6 +10,10 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/")
 public class MainController {
+	@RequestMapping("")
+	public String index() {
+		return "redirect:/";	
+		}
 
 	@RequestMapping("/omikuji")
 	public String omikuji() {
@@ -18,10 +21,8 @@ public class MainController {
 	}
 
 	@RequestMapping("/send")
-	public String send(@RequestParam(value = "city") String city,
-			@RequestParam(value = "person") String person,
-			@RequestParam(value = "number") String number,
-			HttpSession session) {
+	public String send(@RequestParam(value = "city") String city, @RequestParam(value = "person") String person,
+			@RequestParam(value = "number") String number, HttpSession session) {
 		session.setAttribute("city", city);
 		session.setAttribute("person", person);
 		session.setAttribute("number", number);

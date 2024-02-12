@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.booksAPI.models.Book;
 import com.booksAPI.services.BookService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/")
@@ -50,4 +55,30 @@ public class BookController {
 		
 		return "show.jsp";
 	}
+	
+	
+	// ? Create :
+	
+	//step01 : Use the @ModelAttribute annotation to add an empty book object to the view model in the GET route that renders the form.
+	//Render the view (new.jsp)
+	
+	@RequestMapping("/books/new")
+    public String newBook(@ModelAttribute("book") Book book) {
+        return "new.jsp";
+    }
+	
+	//step03 : Pass the filled book from the view model into the POST method
+	//Save the new book to the database
+	
+	 @PostMapping("/books")
+	    public String create(@Valid @ModelAttribute("book") Book book, BindingResult result) {
+	        if (result.hasErrors()) {
+	            return "new.jsp";
+	        } else {
+	            bookService.createBook(book);
+	            return "redirect:/books";
+	        }
+	    }
+
+
 }

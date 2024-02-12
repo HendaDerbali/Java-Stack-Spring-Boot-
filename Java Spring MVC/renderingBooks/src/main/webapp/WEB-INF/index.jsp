@@ -10,7 +10,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<!-- for Bootstrap CSS -->
+	<!-- for Bootstrap CSS -->
 	<link rel="stylesheet" 	href="/webjars/bootstrap/css/bootstrap.min.css" />
 	<!-- YOUR own local CSS -->
 	<link rel="stylesheet" href="/css/main.css"/>

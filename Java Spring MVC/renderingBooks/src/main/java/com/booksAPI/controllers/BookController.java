@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.booksAPI.models.Book;
 import com.booksAPI.services.BookService;
@@ -79,6 +80,29 @@ public class BookController {
 	            return "redirect:/books";
 	        }
 	    }
+	 
+	 
+	 //? Edit : 
+
+	     @RequestMapping("/books/{id}/edit")
+	     public String edit(@PathVariable("id") Long id, Model model) {
+	         Book book = bookService.findBook(id);
+	         model.addAttribute("book", book);
+	         return "edit.jsp";
+	     }
+	     
+	     @RequestMapping(value="/books/{id}", method=RequestMethod.PUT)
+	     public String update(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
+	         if (result.hasErrors()) {
+	             model.addAttribute("book", book);
+	             return "edit.jsp";
+	         } else {
+	             bookService.updateBook(book);
+	             return "redirect:/books";
+	         }
+	     }
+	 }
 
 
-}
+
+

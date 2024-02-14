@@ -25,7 +25,8 @@
 	</p>
 	<p>Number of Pages:
 		<c:out value="${book.title}"></c:out>
-	</p>
+	</p> 
+		
 
 </body>
 </html>

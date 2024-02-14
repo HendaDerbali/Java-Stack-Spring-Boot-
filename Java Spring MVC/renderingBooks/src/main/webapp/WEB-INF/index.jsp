@@ -36,6 +36,9 @@
 					<td><a href="/books/${book.id}">${book.title}</a></td>
 					<td>${book.language}</td>
 					<td>${book.numberOfPages}</td>
+					<td><a href="/books/${book.id}/edit">Edit</a></td>
+
+	
 				</tr>
 			</c:forEach>
 

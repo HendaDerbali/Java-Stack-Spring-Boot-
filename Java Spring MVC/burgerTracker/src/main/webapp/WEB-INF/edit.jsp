@@ -25,39 +25,15 @@
 </head>
 <body>
 
-
-	<h2>All Burgers</h2>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Burger Name</th>
-				<th>Restaurant Name</th>
-				<th>Rating (out of 5)</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<!-- loop over all the books to show the details as in the wireframe! -->
-			<c:forEach var="burger" items="${burgers}">
-				<tr>
-					<td><c:out value="${burger.burgerName}"></c:out> </td>
-                    <td><c:out value="${burger.restaurantName}"></c:out></td>
-                    <td><c:out value="${burger.rating}"></c:out></td>
-				     <td><a href="/edit/${burger.id}">edit</a></td>
-				</tr>
-			</c:forEach>
-
-		</tbody>
-	</table>
-
-
-
-<h2>Add a Burger</h2>
-<form:form action="/addBurger" method="post" modelAttribute="burger"> 
+<!-- Edit Form : add hidden // method = post or put -->
+<h1>Edit Burger</h1>
+<form:form action="/editBurger/${burger.id}" method="post" modelAttribute="burger"> 
+		 <input type="hidden" name="_method" value="put">
 		<p>
 			<form:label path="burgerName">Burger Name</form:label><br/>
 			<form:errors path="burgerName"  class="text-danger"/>
 			<form:input path="burgerName" style="width:250px;" />
+			
 		</p>
 		<p>
 			<form:label path="restaurantName">Restaurant Name</form:label><br/>

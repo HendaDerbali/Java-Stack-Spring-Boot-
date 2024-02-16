@@ -1,5 +1,6 @@
 package com.burgerTracker.controllers;
 
+import java.awt.print.Book;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.burgerTracker.models.Burger;
 import com.burgerTracker.services.BurgerService;
@@ -26,20 +29,12 @@ public class BurgerController {
 
 	// ? Create + Get All ( in the same jsp page):
 
-	// step01 : Use the @ModelAttribute annotation to add an empty book object to
-	// the view model in the GET route that renders the form.
-	// Render the view (new.jsp)
-
-   //?Get All in the same page as Form
 	@GetMapping("")
 	public String home(@ModelAttribute("burger") Burger burger, Model model) {
 		List<Burger> burgers = burgerService.allBurgers();
 		model.addAttribute("burgers", burgers);
 		return "index.jsp";
 	}
-
-	// step03 : Pass the filled book from the view model into the POST method
-	// Save the new book to the database
 
 
 	// Form in the same page as  Get All
@@ -53,5 +48,27 @@ public class BurgerController {
 		burgerService.createBurger(burger);
 		return "redirect:/";
 	}
+	
+	
+	// Edit Burger:
+	  @RequestMapping("/edit/{id}")
+	    public String edit(@PathVariable("id") Long id, Model model) {
+	        Burger burger = burgerService.findBurger(id);
+	        model.addAttribute("burger", burger);
+	        return "edit.jsp";
+	    }
+	  
+	  @RequestMapping(value="/editBurger/{id}", method=RequestMethod.PUT)
+	    public String update(@Valid @ModelAttribute("burger") Burger burger, BindingResult result, Model model) {
+	        if (result.hasErrors()) {
+	            model.addAttribute("burger", burger);
+	            return "edit.jsp";
+	        } else {
+	        	burgerService.updateBurger(burger);
+	            return "redirect:/";
+	        }
+	    }
+	    
+	    
 
 }

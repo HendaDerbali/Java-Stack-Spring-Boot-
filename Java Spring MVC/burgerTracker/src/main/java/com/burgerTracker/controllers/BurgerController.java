@@ -1,12 +1,12 @@
 package com.burgerTracker.controllers;
 
-import java.awt.print.Book;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +50,7 @@ public class BurgerController {
 	}
 	
 	
-	// Edit Burger:
+	// ? Edit :
 	  @RequestMapping("/edit/{id}")
 	    public String edit(@PathVariable("id") Long id, Model model) {
 	        Burger burger = burgerService.findBurger(id);
@@ -68,7 +68,16 @@ public class BurgerController {
 	            return "redirect:/";
 	        }
 	    }
-	    
+	  
+	  
+	  // ? Delete : 
+	    @RequestMapping(value="/deleteBurger/{id}", method=RequestMethod.DELETE)
+	    // we can use also : @DeleteMapping("/deleteBurger/{id}")
+	    public String destroy(@PathVariable("id") Long id) {
+	        burgerService.deleteBurger(id);
+	        return "redirect:/";
+	    }
+
 	    
 
 }

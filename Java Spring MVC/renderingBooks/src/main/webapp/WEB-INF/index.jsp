@@ -37,12 +37,17 @@
 					<td>${book.language}</td>
 					<td>${book.numberOfPages}</td>
 					<td><a href="/books/${book.id}/edit">Edit</a></td>
-
-	
+					<td>
+					<!-- Delete  -->
+						<form action="/books/${book.id}" method="post">
+    						<input type="hidden" name="_method" value="delete">
+   							<input type="submit" value="Delete">
+						</form>
+					<td>
 				</tr>
 			</c:forEach>
-
 		</tbody>
 	</table>
+	<a href = "/books/new">Add New Book</a>
 </body>
 </html>

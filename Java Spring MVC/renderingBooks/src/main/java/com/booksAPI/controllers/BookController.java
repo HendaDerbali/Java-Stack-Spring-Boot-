@@ -21,19 +21,18 @@ import jakarta.validation.Valid;
 @RequestMapping("/")
 
 public class BookController {
-	
-	//First Step Usually add this to link this controller with services :
+
+	// First Step Usually add this to link this controller with services :
 	@Autowired
 	BookService bookService;
-	
-	//Second Steps : Routes
-	
+
+	// Second Steps : Routes
+
 	@RequestMapping("")
 	public String home() {
 		return "redirect:/books";
 	}
 
-	
 	// ?Get All
 	@RequestMapping("/books")
 	public String index(Model model) {
@@ -43,66 +42,70 @@ public class BookController {
 
 		return "index.jsp";
 	}
-	
-	
+
 	// ? Get One By id
 	@RequestMapping("/books/{id}")
-		// Model bech yhez data: 
-	public String showOne(Model model,@PathVariable("id") Long id) {
+	// Model bech yhez data:
+	public String showOne(Model model, @PathVariable("id") Long id) {
 		// Fetch the book by its ID and add it to the model
 		Book book = bookService.findBook(id);
 		model.addAttribute("book", book);
 		System.out.println(book); // just to show my console
-		
+
 		return "show.jsp";
 	}
-	
-	
+
 	// ? Create :
-	
-	//step01 : Use the @ModelAttribute annotation to add an empty book object to the view model in the GET route that renders the form.
-	//Render the view (new.jsp)
-	
+
+	// step01 : Use the @ModelAttribute annotation to add an empty book object to
+	// the view model in the GET route that renders the form.
+	// Render the view (new.jsp)
+
 	@RequestMapping("/books/new")
-    public String newBook(@ModelAttribute("book") Book book) {
-        return "new.jsp";
-    }
+	public String newBook(@ModelAttribute("book") Book book) {
+		return "new.jsp";
+	}
+
+	// step03 : Pass the filled book from the view model into the POST method
+	// Save the new book to the database
+
+	@PostMapping("/books")
+	public String create(@Valid @ModelAttribute("book") Book book, BindingResult result) {
+		if (result.hasErrors()) {
+			return "new.jsp";
+		} else {
+			bookService.createBook(book);
+			return "redirect:/books";
+		}
+	}
 	
-	//step03 : Pass the filled book from the view model into the POST method
-	//Save the new book to the database
+
+	// ? Edit :
+
+	@RequestMapping("/books/{id}/edit")
+	public String edit(@PathVariable("id") Long id, Model model) {
+		Book book = bookService.findBook(id);
+		model.addAttribute("book", book);
+		return "edit.jsp";
+	}
+
+	@RequestMapping(value = "/books/{id}", method = RequestMethod.PUT)
+	public String update(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("book", book);
+			return "edit.jsp";
+		} else {
+			bookService.updateBook(book);
+			return "redirect:/books";
+		}
+	}
 	
-	 @PostMapping("/books")
-	    public String create(@Valid @ModelAttribute("book") Book book, BindingResult result) {
-	        if (result.hasErrors()) {
-	            return "new.jsp";
-	        } else {
-	            bookService.createBook(book);
-	            return "redirect:/books";
-	        }
-	    }
-	 
-	 
-	 //? Edit : 
+	// ? Delete :
+	@RequestMapping(value = "/books/{id}", method = RequestMethod.DELETE)
+	// We can use : @DeleteMapping("/books/{id}")
+	public String destroy(@PathVariable("id") Long id) {
+		bookService.deleteBook(id);
+		return "redirect:/books";
+	}
 
-	     @RequestMapping("/books/{id}/edit")
-	     public String edit(@PathVariable("id") Long id, Model model) {
-	         Book book = bookService.findBook(id);
-	         model.addAttribute("book", book);
-	         return "edit.jsp";
-	     }
-	     
-	     @RequestMapping(value="/books/{id}", method=RequestMethod.PUT)
-	     public String update(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
-	         if (result.hasErrors()) {
-	             model.addAttribute("book", book);
-	             return "edit.jsp";
-	         } else {
-	             bookService.updateBook(book);
-	             return "redirect:/books";
-	         }
-	     }
-	 }
-
-
-
-
+}

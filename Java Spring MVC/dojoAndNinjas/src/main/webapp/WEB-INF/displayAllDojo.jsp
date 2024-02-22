@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title></title>
+<title>Save Travels</title>
 <!-- for Bootstrap CSS -->
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 <!-- YOUR own local CSS -->
@@ -24,49 +24,32 @@
 
 </head>
 <body>
-	<h1>
-		<c:out value="${dojo.name}"></c:out>
-	</h1>
-
-
+	<h1>Diplay All Dojos</h1>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>First Name</th>
-				<th>Last Name</th>
-				<th>Age</th>
+				<th>Dojo Name</th>
+				<th>Actions</th>	
 			</tr>
 		</thead>
 		<tbody>
-			<!-- loop over all the books to show the details as in the wireframe! -->
-			<c:forEach var="ninja" items="${dojo.ninjas}">
+			<!-- loop over all the dojos to show the details as in the wireframe! -->
+			<c:forEach var="dojo" items="${dojos}">
 				<tr>
-					<td><c:out value="${ninja.firstName}" /></td>
-					<td><c:out value="${ninja.lastName}" /></td>
-					<td><c:out value="${ninja.age}" /></td>
+					<td><c:out value="${dojo.name}" /></td>
 					<td>
-						<!-- Delete Ninja-->
-						<form action="/deleteNinja/${ninja.id}" method="post"
+						<!-- Delete -->
+						<form action="/deleteDojo/${dojo.id}" method="post"
 							style="display: inline">
 							<input type="hidden" name="_method" value="delete">
 							<button type="submit" class="btn btn-danger">Delete</button>
 						</form>
 					</td>
 				</tr>
+
+
 			</c:forEach>
-			<!-- Number of Ninjas that are related to one Dojo -->
-			<p>
-				There is
-				<c:out value="${dojo.ninjas.size()}" />
-				ninja(s) for the
-				<c:out value="${dojo.name}" />
-				dojo
-			</p>
-
-
 		</tbody>
 	</table>
-
-
 </body>
 </html>

@@ -41,6 +41,15 @@ public class Dojo {
 	private Date createdAt;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updatedAt;
+	
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = new Date();
+    }
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedAt = new Date();
+    }
 
 	// Empty Constructor :
 	public Dojo() {
@@ -79,14 +88,5 @@ public class Dojo {
 	}
 
 	
-	// other getters and setters removed for brevity
-    @PrePersist
-    protected void onCreate(){
-        this.createdAt = new Date();
-    }
-    @PreUpdate
-    protected void onUpdate(){
-        this.updatedAt = new Date();
-    }
 
 }

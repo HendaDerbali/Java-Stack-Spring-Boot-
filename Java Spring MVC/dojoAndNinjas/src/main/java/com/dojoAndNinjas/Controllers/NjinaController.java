@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dojoAndNinjas.Services.DojoService;
 import com.dojoAndNinjas.Services.NinjaService;
@@ -37,7 +39,7 @@ public class NjinaController {
 
 			@RequestMapping("/ninjas/new")
 			public String newNinja(@ModelAttribute("ninja") Ninja ninja, Model model) {
-			 //add allDojos () to fetch all Dojos in order to display them in select list
+			 // 1M: add allDojos () to fetch all Dojos in order to display them in select list
 				List<Dojo> dojos = dojoService.allDojos();
 				System.out.println(dojos);
 				model.addAttribute("dojos", dojos); 
@@ -46,13 +48,25 @@ public class NjinaController {
 			}
 
 			@PostMapping("/addNinja")
-			public String create(@Valid @ModelAttribute("ninja") Ninja ninja, BindingResult result) {
+			public String create(@Valid @ModelAttribute("ninja") Ninja ninja, BindingResult result, Model model) {
 				if (result.hasErrors()) {
+					 // 1M: add allDojos () to fetch all Dojos in order to display them in select list
+					List<Dojo> dojos = dojoService.allDojos();
+					model.addAttribute("dojos", dojos); 
+					
 					return "ninja.jsp";
 				} else {
 					ninjaService.createNinja(ninja);
-					return "redirect:/";
+					return "redirect:/ninjas/new";
 				}
+			}
+			
+			
+			// ? Delete Ninja :
+			@RequestMapping(value = "/deleteNinja/{id}", method = RequestMethod.DELETE)
+			public String destroy(@PathVariable("id") Long id) {
+				ninjaService.deleteNinja(id);
+				return "redirect:/";
 			}
 			
 

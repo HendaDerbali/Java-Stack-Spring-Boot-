@@ -27,7 +27,6 @@ public class MainController {
 	@Autowired
 	private BookService bookService;
 
-
 	@GetMapping("/")
 	public String index(Model model) {
 
@@ -90,6 +89,12 @@ public class MainController {
 		session.setAttribute("userId", null);
 		return "redirect:/";
 	}
+// Logout Route (M2)
+//    @GetMapping("/logout")
+//    public String logout(HttpSession session) {
+//    	session.invalidate();
+//    	return "redirect:/";
+//    }
 
 	// Dashboard Route
 	@GetMapping("/books")
@@ -100,10 +105,10 @@ public class MainController {
 		}
 		User user = userServ.findById(userId);
 		model.addAttribute("user", user);
-		// Get all Books: 
-    	model.addAttribute("books", bookService.allBooks());
+		// Get all Books:
+		model.addAttribute("books", bookService.allBooks());
 
 		return "books.jsp";
 	}
-	
+
 }

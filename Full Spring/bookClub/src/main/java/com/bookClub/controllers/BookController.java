@@ -35,7 +35,7 @@ public class BookController {
 
 	@RequestMapping("/books/new")
 	public String newBook(@ModelAttribute("book") Book book, Model model, HttpSession session) {
-		// 3 session lines : to make bring the user in the session 
+		// 3 session lines : to make bring the user in the session
 		User user = userService.findById((Long) session.getAttribute("userId"));
 		model.addAttribute("user", user);
 		System.out.println(user);
@@ -56,52 +56,66 @@ public class BookController {
 
 	// ? Get One By id
 
-    @GetMapping("/books/{id}")
-    public String showPage(Model model, @PathVariable("id") Long id, HttpSession session) {
-    	if(session.getAttribute("userId") == null) {
-    		return "redirect:/books";
-    	}
-    	// 3 session lines : to make bring the user in the session 
+	@GetMapping("/books/{id}")
+	public String showPage(Model model, @PathVariable("id") Long id, HttpSession session) {
+		// session lines : to make bring the user in the session
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/books";
+		}
+		// 3 session lines : to make bring the user in the session
 		User user = userService.findById((Long) session.getAttribute("userId"));
 		model.addAttribute("user", user);
-		System.out.println(user);	
-	
-    	Book book = bookService.findBook(id);
-    	model.addAttribute("book", book);
-    	System.out.println(book);
-   
-    	return "showOneBook.jsp";
-    }
-    
+		System.out.println(user);
+
+		Book book = bookService.findBook(id);
+		model.addAttribute("book", book);
+		System.out.println(book);
+
+		return "showOneBook.jsp";
+	}
+
 	// ? Delete Book :
 	@RequestMapping(value = "/deleteBook/{id}", method = RequestMethod.DELETE)
 	public String destroy(@PathVariable("id") Long id) {
 		bookService.deleteBook(id);
 		return "redirect:/books";
 	}
-	
-	
+
 	// Edit Book :
 	// ? Edit :
-	
-		@RequestMapping("/books/{id}/edit")
-		public String edit(@PathVariable("id") Long id, Model model) {
-			Book book = bookService.findBook(id);
+
+	@RequestMapping("/books/{id}/edit")
+	public String edit(@PathVariable("id") Long id, Model model, HttpSession session) {
+		// Session
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/";
+		}
+		// 3 session lines : to make bring the user in the session
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		model.addAttribute("user", user);
+		System.out.println(user);
+
+		Book book = bookService.findBook(id);
+		model.addAttribute("book", book);
+		System.out.println(book);
+
+		return "editBook.jsp";
+	}
+
+	@RequestMapping(value = "/editBook/{bookId}", method = RequestMethod.PUT)
+	public String update(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model,
+			HttpSession session) {
+		// Session
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/";
+		}
+		if (result.hasErrors()) {
 			model.addAttribute("book", book);
-			System.out.println(book);
-
 			return "editBook.jsp";
+		} else {
+			bookService.updateBook(book);
+			return "redirect:/books";
 		}
-
-		@RequestMapping(value = "/editBook/{bookId}", method = RequestMethod.PUT)
-		public String update(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
-			if (result.hasErrors()) {
-				model.addAttribute("book", book);
-				return "editBook.jsp";
-			} else {
-				bookService.updateBook(book);
-				return "redirect:/books";
-			}
-		}
+	}
 
 }
